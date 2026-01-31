@@ -261,6 +261,9 @@
     </ApplicationDefinition>
     <Compile Include="AvalonEdit\AvalonEditManager.cs" />
     <Compile Include="AvalonEdit\Utils.cs" />
+    <Compile Include="Core\AI\ActorInfoCompletionService.cs" />
+    <Compile Include="Core\AI\DashScopeClient.cs" />
+    <Compile Include="Core\AI\GenderRecognitionService.cs" />
     <Compile Include="Core\Config\Base\AbstractConfig.cs" />
     <Compile Include="Core\Config\Base\IConfig.cs" />
     <Compile Include="Core\Config\Common\DownloadConfig.cs" />
