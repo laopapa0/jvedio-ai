@@ -1,4 +1,5 @@
-﻿using Jvedio.Core.Enums;
+﻿using Jvedio.Core.AI;
+using Jvedio.Core.Enums;
 using Jvedio.Core.Scan;
 using Jvedio.Entity;
 using SuperControls.Style;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using static Jvedio.MapperManager;
@@ -233,6 +235,123 @@ namespace Jvedio
         private void onTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
             Jvedio.AvalonEdit.Utils.LostFocus(sender);
+        }
+
+        /// <summary>
+        /// 使用 AI 补全演员信息
+        /// </summary>
+        private async void CompleteActorInfoWithAI(object sender, RoutedEventArgs e)
+        {
+            if (CurrentActorInfo == null || string.IsNullOrWhiteSpace(CurrentActorInfo.ActorName))
+            {
+                MessageNotify.Error("请先输入演员名字");
+                return;
+            }
+
+            // 检查是否已配置千问 API
+            if (!DashScopeClient.IsConfigured())
+            {
+                MessageNotify.Error("未配置千问 API，请在 .env 文件中配置 DASHSCOPE_API_KEY");
+                return;
+            }
+
+            try
+            {
+                // 禁用按钮，防止重复点击
+                btnAICompletion.IsEnabled = false;
+                btnAICompletion.Content = "正在获取...";
+
+                // 调用 AI 补全服务
+                ActorCompletionResult result = await ActorInfoCompletionService.CompleteByNameAsync(CurrentActorInfo);
+
+                if (result.Success && result.CompletedInfo != null)
+                {
+                    // 更新演员信息
+                    var info = result.CompletedInfo;
+
+                    // 生日
+                    if (!string.IsNullOrEmpty(info.Birthday))
+                    {
+                        CurrentActorInfo.Birthday = info.Birthday;
+                    }
+
+                    // 年龄
+                    if (info.Age.HasValue && info.Age.Value > 0)
+                    {
+                        CurrentActorInfo.Age = info.Age.Value;
+                    }
+
+                    // 血型
+                    if (!string.IsNullOrEmpty(info.BloodType))
+                    {
+                        CurrentActorInfo.BloodType = info.BloodType;
+                    }
+
+                    // 身高
+                    if (info.Height.HasValue && info.Height.Value > 0)
+                    {
+                        CurrentActorInfo.Height = info.Height.Value;
+                    }
+
+                    // 体重
+                    if (info.Weight.HasValue && info.Weight.Value > 0)
+                    {
+                        CurrentActorInfo.Weight = info.Weight.Value;
+                    }
+
+                    // 罩杯
+                    if (info.Cup.HasValue && info.Cup.Value != 'Z')
+                    {
+                        CurrentActorInfo.Cup = info.Cup.Value;
+                    }
+
+                    // 胸围
+                    if (info.Chest.HasValue && info.Chest.Value > 0)
+                    {
+                        CurrentActorInfo.Chest = info.Chest.Value;
+                    }
+
+                    // 腰围
+                    if (info.Waist.HasValue && info.Waist.Value > 0)
+                    {
+                        CurrentActorInfo.Waist = info.Waist.Value;
+                    }
+
+                    // 臀围
+                    if (info.Hipline.HasValue && info.Hipline.Value > 0)
+                    {
+                        CurrentActorInfo.Hipline = info.Hipline.Value;
+                    }
+
+                    // 出生地
+                    if (!string.IsNullOrEmpty(info.BirthPlace))
+                    {
+                        CurrentActorInfo.BirthPlace = info.BirthPlace;
+                    }
+
+                    // 爱好
+                    if (!string.IsNullOrEmpty(info.Hobby))
+                    {
+                        CurrentActorInfo.Hobby = info.Hobby;
+                    }
+
+                    MessageNotify.Success($"AI 补全成功！置信度：{result.Confidence:P0}");
+                }
+                else
+                {
+                    MessageNotify.Error($"AI 补全失败：{result.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageNotify.Error($"AI 补全出错：{ex.Message}");
+            }
+            finally
+            {
+                // 恢复按钮状态
+                btnAICompletion.IsEnabled = true;
+                btnAICompletion.Content = "AI 补全信息";
+            }
         }
     }
 }

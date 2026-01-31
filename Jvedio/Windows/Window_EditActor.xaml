@@ -298,6 +298,15 @@
                 Orientation="Horizontal">
 
                 <Button
+                    x:Name="btnAICompletion"
+                    MinWidth="120"
+                    Margin="10"
+                    VerticalAlignment="Bottom"
+                    Click="CompleteActorInfoWithAI"
+                    Content="AI 补全信息"
+                    Style="{StaticResource ButtonInfo}" />
+
+                <Button
                     MinWidth="100"
                     Margin="10"
                     VerticalAlignment="Bottom"
