@@ -3,12 +3,17 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-/Jvedio-WPF/Release/*
-/Jvedio-WPF/Jvedio/sql/18+/*
-/Jvedio-WPF/Jvedio/Sample/18+/*
-/Jvedio-WPF/Jvedio/Test/DataBase/*
-/Jvedio-WPF/Jvedio/Test/File/*
-/Jvedio-WPF/Jvedio/Test/SecretTest/*
+# Other platform versions (only keep Windows WPF)
+Jvedio-Vue/
+Jvedio-Linux/
+Jvedio-Android/
+
+/Release/*
+/Jvedio/sql/18+/*
+/Jvedio/Sample/18+/*
+/Jvedio/Test/DataBase/*
+/Jvedio/Test/File/*
+/Jvedio/Test/SecretTest/*
 Version.md
 /.VSCodeCounter/*
 

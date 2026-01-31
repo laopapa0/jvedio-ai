@@ -1,0 +1,151 @@
+name: Build Jvedio with AI Features
+
+on:
+  push:
+    branches: [ master, main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+env:
+  SOLUTION_PATH: Jvedio.sln
+  PROJECT_PATH: Jvedio\Jvedio\Jvedio.csproj
+  BUILD_CONFIGURATION: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild path
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.config') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Restore NuGet packages
+      run: nuget restore ${{ env.SOLUTION_PATH }}
+
+    - name: Clean build
+      run: msbuild ${{ env.PROJECT_PATH }} /t:Clean /p:Configuration=${{ env.BUILD_CONFIGURATION }}
+
+    - name: Build solution
+      run: msbuild ${{ env.PROJECT_PATH }} /t:Build /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform="Any CPU"
+
+    - name: Prepare release package
+      shell: pwsh
+      run: |
+        # Create release directory
+        New-Item -ItemType Directory -Force -Path Release
+
+        # Copy build output
+        Copy-Item -Path "Jvedio\bin\Release\*" -Destination "Release\" -Recurse -Force
+
+        # Copy AI config
+        Copy-Item -Path ".env.example" -Destination "Release\.env"
+
+        # Create plugin directories
+        New-Item -ItemType Directory -Force -Path "Release\plugins\crawlers"
+        New-Item -ItemType Directory -Force -Path "Release\Data\x64"
+        New-Item -ItemType Directory -Force -Path "Release\Data\x86"
+
+        # Copy SQLite dependencies
+        Copy-Item -Path "Jvedio\Data\x64\*" -Destination "Release\Data\x64\" -Force
+        Copy-Item -Path "Jvedio\Data\x86\*" -Destination "Release\Data\x86\" -Force
+
+        # Clean temporary files
+        Remove-Item -Path "Release\*.pdb" -ErrorAction SilentlyContinue
+        Remove-Item -Path "Release\*.xml" -ErrorAction SilentlyContinue
+        Remove-Item -Path "Release\*.vshost.*" -ErrorAction SilentlyContinue
+
+        # Create version info
+        $version = if ($env:GITHUB_REF -match 'refs/tags/v(.*)') { $matches[1] } else { "latest" }
+        $commit = git rev-parse --short HEAD
+        $date = Get-Date -Format "yyyy-MM-dd"
+
+        @"
+        Jvedio - Local Video Manager with AI Features
+        ==================================================
+        Version: $version
+        Commit: $commit
+        Build Date: $date
+        Platform: Windows (.NET Framework 4.7.2)
+
+        New Features:
+        - Actor Gender Recognition (AI)
+        - Actor Information Completion (AI)
+        - DashScope API Integration
+
+        Quick Start:
+        1. Edit .env file and fill in your DashScope API Key
+        2. Run Jvedio.exe
+        3. Enjoy the AI features!
+
+        For more information, visit:
+        https://github.com/hitchao/Jvedio
+        "@ | Out-File -FilePath "Release\README.txt" -Encoding UTF8
+
+    - name: Create zip archive
+      shell: pwsh
+      run: |
+        $version = if ($env:GITHUB_REF -match 'refs/tags/v(.*)') { $matches[1] } else { "dev" }
+        $zipName = "Jvedio-$version.zip"
+        Compress-Archive -Path Release\* -DestinationPath $zipName -CompressionLevel Optimal
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Jvedio-Windows
+        path: |
+          Jvedio-*.zip
+          Release\
+        retention-days: 30
+
+    - name: Create Release (if tagged)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: Jvedio-*.zip
+        body: |
+          ## Jvedio Release with AI Features
+
+          This release includes:
+          - Actor Gender Recognition (powered by DashScope AI)
+          - Actor Information Completion
+          - All original features
+
+          ## Installation
+
+          1. Download `Jvedio-x.x.x.zip`
+          2. Extract to any folder
+          3. Edit `.env` file with your DashScope API Key
+          4. Run `Jvedio.exe`
+
+          ## Getting DashScope API Key
+
+          Visit: https://dashscope.console.aliyun.com/apiKey
+
+          ## Changelog
+
+          See commits for details.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build summary
+      run: |
+        echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Configuration: Release" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Platform: Windows (.NET Framework 4.7.2)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ AI Features: Enabled (DashScope)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Artifact: Uploaded as 'Jvedio-Windows'" >> $GITHUB_STEP_SUMMARY
