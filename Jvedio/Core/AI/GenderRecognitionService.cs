@@ -2,9 +2,9 @@ using Jvedio.Core.Enums;
 using Jvedio.Core.Logs;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using static Jvedio.App;
 
 namespace Jvedio.Core.AI
 {
@@ -39,7 +39,7 @@ namespace Jvedio.Core.AI
                 if (!File.Exists(imagePath))
                 {
                     result.Reason = "图片文件不存在";
-                    Logger.Instance.Warn($"图片不存在: {imagePath}");
+                    Logger.Warn($"图片不存在: {imagePath}");
                     return result;
                 }
 
@@ -48,7 +48,7 @@ namespace Jvedio.Core.AI
                 if (string.IsNullOrEmpty(base64Image))
                 {
                     result.Reason = "图片转换失败";
-                    Logger.Instance.Warn($"图片转换失败: {imagePath}");
+                    Logger.Warn($"图片转换失败: {imagePath}");
                     return result;
                 }
 
@@ -100,14 +100,14 @@ namespace Jvedio.Core.AI
                         result.Reason = recognitionResult.Reason;
                         result.Success = true;
 
-                        Logger.Instance.Info($"图片识别成功: {actorName} -> {result.Gender} (置信度: {result.Confidence})");
+                        Logger.Info($"图片识别成功: {actorName} -> {result.Gender} (置信度: {result.Confidence})");
                     }
                 }
             }
             catch (Exception ex)
             {
                 result.Reason = $"识别异常: {ex.Message}";
-                Logger.Instance.Error($"图片识别异常: {ex.Message}");
+                Logger.Error($"图片识别异常: {ex.Message}");
             }
 
             return result;
@@ -167,14 +167,14 @@ namespace Jvedio.Core.AI
                         result.Reason = recognitionResult.Reason;
                         result.Success = true;
 
-                        Logger.Instance.Info($"名字识别成功: {actorName} -> {result.Gender} (置信度: {result.Confidence})");
+                        Logger.Info($"名字识别成功: {actorName} -> {result.Gender} (置信度: {result.Confidence})");
                     }
                 }
             }
             catch (Exception ex)
             {
                 result.Reason = $"识别异常: {ex.Message}";
-                Logger.Instance.Error($"名字识别异常: {ex.Message}");
+                Logger.Error($"名字识别异常: {ex.Message}");
             }
 
             return result;
@@ -268,19 +268,29 @@ namespace Jvedio.Core.AI
 
                 // 根据文件扩展名添加数据URI前缀
                 var extension = Path.GetExtension(imagePath).ToLower();
-                string mimeType = extension switch
+                string mimeType;
+                if (extension == ".jpg" || extension == ".jpeg")
                 {
-                    ".jpg" or ".jpeg" => "image/jpeg",
-                    ".png" => "image/png",
-                    ".webp" => "image/webp",
-                    _ => "image/jpeg"
-                };
+                    mimeType = "image/jpeg";
+                }
+                else if (extension == ".png")
+                {
+                    mimeType = "image/png";
+                }
+                else if (extension == ".webp")
+                {
+                    mimeType = "image/webp";
+                }
+                else
+                {
+                    mimeType = "image/jpeg";
+                }
 
                 return $"data:{mimeType};base64,{base64}";
             }
             catch (Exception ex)
             {
-                Logger.Instance.Error($"图片转换Base64失败: {ex.Message}");
+                Logger.Error($"图片转换Base64失败: {ex.Message}");
                 return null;
             }
         }

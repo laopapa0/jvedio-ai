@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using static Jvedio.App;
 
 namespace Jvedio.Core.AI
 {
@@ -80,7 +79,7 @@ namespace Jvedio.Core.AI
 
             if (needCompletion)
             {
-                Logger.Instance.Info($"演员 {actorInfo.ActorName} 信息缺失 {missingFields}/{totalFields} ({missingRatio:P0})，需要补全");
+                Logger.Info($"演员 {actorInfo.ActorName} 信息缺失 {missingFields}/{totalFields} ({missingRatio:P0})，需要补全");
             }
 
             return needCompletion;
@@ -153,14 +152,14 @@ namespace Jvedio.Core.AI
                         result.Success = true;
                         result.Message = $"成功补全 {completedData.Reason}";
 
-                        Logger.Instance.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
+                        Logger.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
                     }
                 }
             }
             catch (Exception ex)
             {
                 result.Message = $"补全异常: {ex.Message}";
-                Logger.Instance.Error($"演员信息补全异常: {ex.Message}");
+                Logger.Error($"演员信息补全异常: {ex.Message}");
             }
 
             return result;
@@ -258,14 +257,14 @@ namespace Jvedio.Core.AI
                         result.Success = true;
                         result.Message = $"成功补全 {completedData.Reason}";
 
-                        Logger.Instance.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
+                        Logger.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
                     }
                 }
             }
             catch (Exception ex)
             {
                 result.Message = $"补全异常: {ex.Message}";
-                Logger.Instance.Error($"演员信息补全异常: {ex.Message}");
+                Logger.Error($"演员信息补全异常: {ex.Message}");
             }
 
             return result;
@@ -446,20 +445,31 @@ namespace Jvedio.Core.AI
                 var bytes = File.ReadAllBytes(imagePath);
                 var base64 = Convert.ToBase64String(bytes);
 
+                // 根据文件扩展名添加数据URI前缀
                 var extension = Path.GetExtension(imagePath).ToLower();
-                string mimeType = extension switch
+                string mimeType;
+                if (extension == ".jpg" || extension == ".jpeg")
                 {
-                    ".jpg" or ".jpeg" => "image/jpeg",
-                    ".png" => "image/png",
-                    ".webp" => "image/webp",
-                    _ => "image/jpeg"
-                };
+                    mimeType = "image/jpeg";
+                }
+                else if (extension == ".png")
+                {
+                    mimeType = "image/png";
+                }
+                else if (extension == ".webp")
+                {
+                    mimeType = "image/webp";
+                }
+                else
+                {
+                    mimeType = "image/jpeg";
+                }
 
                 return $"data:{mimeType};base64,{base64}";
             }
             catch (Exception ex)
             {
-                Logger.Instance.Error($"图片转换Base64失败: {ex.Message}");
+                Logger.Error($"图片转换Base64失败: {ex.Message}");
                 return null;
             }
         }
