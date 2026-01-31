@@ -377,11 +377,11 @@ namespace Jvedio
         {
             if (string.IsNullOrEmpty(_lastRawResponse))
             {
-                MessageNotify.Warn("还没有原始返回内容，请先点击\"AI 补全信息\"按钮");
+                MessageNotify.Error("还没有原始返回内容，请先点击\"AI 补全信息\"按钮");
                 return;
             }
 
-            var dialog = new Dialog_ShowRawResponse(_lastRawResponse);
+            var dialog = new Jvedio.Windows.Dialog_ShowRawResponse(_lastRawResponse);
             dialog.ShowDialog();
         }
     }

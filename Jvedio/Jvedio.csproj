@@ -501,6 +501,12 @@
     <Compile Include="Windows\Dialog\Window_TagStamp.xaml.cs">
       <DependentUpon>Window_TagStamp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Dialog_ShowRawResponse.xaml.cs">
+      <DependentUpon>Dialog_ShowRawResponse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Dialog_Window_AITest.xaml.cs">
+      <DependentUpon>Dialog_Window_AITest.xaml</DependentUpon>
+    </Compile>
     <Page Include="AvalonEdit\SearchPanel\SearchPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -630,6 +636,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Dialog\Window_TagStamp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Dialog_ShowRawResponse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Dialog_Window_AITest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
