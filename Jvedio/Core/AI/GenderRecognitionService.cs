@@ -39,7 +39,7 @@ namespace Jvedio.Core.AI
                 if (!File.Exists(imagePath))
                 {
                     result.Reason = "图片文件不存在";
-                    Logger.Warn($"图片不存在: {imagePath}");
+                    Logger.Instance.Warn($"图片不存在: {imagePath}");
                     return result;
                 }
 
@@ -48,7 +48,7 @@ namespace Jvedio.Core.AI
                 if (string.IsNullOrEmpty(base64Image))
                 {
                     result.Reason = "图片转换失败";
-                    Logger.Warn($"图片转换失败: {imagePath}");
+                    Logger.Instance.Warn($"图片转换失败: {imagePath}");
                     return result;
                 }
 
@@ -100,14 +100,14 @@ namespace Jvedio.Core.AI
                         result.Reason = recognitionResult.Reason;
                         result.Success = true;
 
-                        Logger.Info($"图片识别成功: {actorName} -> {result.Gender} (置信度: {result.Confidence})");
+                        Logger.Instance.Info($"图片识别成功: {actorName} -> {result.Gender} (置信度: {result.Confidence})");
                     }
                 }
             }
             catch (Exception ex)
             {
                 result.Reason = $"识别异常: {ex.Message}";
-                Logger.Error($"图片识别异常: {ex.Message}");
+                Logger.Instance.Error($"图片识别异常: {ex.Message}");
             }
 
             return result;
@@ -167,14 +167,14 @@ namespace Jvedio.Core.AI
                         result.Reason = recognitionResult.Reason;
                         result.Success = true;
 
-                        Logger.Info($"名字识别成功: {actorName} -> {result.Gender} (置信度: {result.Confidence})");
+                        Logger.Instance.Info($"名字识别成功: {actorName} -> {result.Gender} (置信度: {result.Confidence})");
                     }
                 }
             }
             catch (Exception ex)
             {
                 result.Reason = $"识别异常: {ex.Message}";
-                Logger.Error($"名字识别异常: {ex.Message}");
+                Logger.Instance.Error($"名字识别异常: {ex.Message}");
             }
 
             return result;
@@ -280,7 +280,7 @@ namespace Jvedio.Core.AI
             }
             catch (Exception ex)
             {
-                Logger.Error($"图片转换Base64失败: {ex.Message}");
+                Logger.Instance.Error($"图片转换Base64失败: {ex.Message}");
                 return null;
             }
         }

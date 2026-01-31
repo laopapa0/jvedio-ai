@@ -276,9 +276,9 @@ namespace Jvedio
                     }
 
                     // 年龄
-                    if (info.Age.HasValue && info.Age.Value > 0)
+                    if (info.Age > 0)
                     {
-                        CurrentActorInfo.Age = info.Age.Value;
+                        CurrentActorInfo.Age = info.Age;
                     }
 
                     // 血型
@@ -288,39 +288,39 @@ namespace Jvedio
                     }
 
                     // 身高
-                    if (info.Height.HasValue && info.Height.Value > 0)
+                    if (info.Height > 0)
                     {
-                        CurrentActorInfo.Height = info.Height.Value;
+                        CurrentActorInfo.Height = info.Height;
                     }
 
                     // 体重
-                    if (info.Weight.HasValue && info.Weight.Value > 0)
+                    if (info.Weight > 0)
                     {
-                        CurrentActorInfo.Weight = info.Weight.Value;
+                        CurrentActorInfo.Weight = info.Weight;
                     }
 
                     // 罩杯
-                    if (info.Cup.HasValue && info.Cup.Value != 'Z')
+                    if (info.Cup != 'Z')
                     {
-                        CurrentActorInfo.Cup = info.Cup.Value;
+                        CurrentActorInfo.Cup = info.Cup;
                     }
 
                     // 胸围
-                    if (info.Chest.HasValue && info.Chest.Value > 0)
+                    if (info.Chest > 0)
                     {
-                        CurrentActorInfo.Chest = info.Chest.Value;
+                        CurrentActorInfo.Chest = info.Chest;
                     }
 
                     // 腰围
-                    if (info.Waist.HasValue && info.Waist.Value > 0)
+                    if (info.Waist > 0)
                     {
-                        CurrentActorInfo.Waist = info.Waist.Value;
+                        CurrentActorInfo.Waist = info.Waist;
                     }
 
                     // 臀围
-                    if (info.Hipline.HasValue && info.Hipline.Value > 0)
+                    if (info.Hipline > 0)
                     {
-                        CurrentActorInfo.Hipline = info.Hipline.Value;
+                        CurrentActorInfo.Hipline = info.Hipline;
                     }
 
                     // 出生地

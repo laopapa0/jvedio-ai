@@ -38,7 +38,7 @@ namespace Jvedio.Core.AI
             {
                 if (!File.Exists(_envFilePath))
                 {
-                    Logger.Error($"环境配置文件不存在: {_envFilePath}");
+                    Logger.Instance.Error($"环境配置文件不存在: {_envFilePath}");
                     return;
                 }
 
@@ -66,11 +66,11 @@ namespace Jvedio.Core.AI
                     }
                 }
 
-                Logger.Info($"千问API配置加载成功: {_apiBase}");
+                Logger.Instance.Info($"千问API配置加载成功: {_apiBase}");
             }
             catch (Exception ex)
             {
-                Logger.Error($"加载千问API配置失败: {ex.Message}");
+                Logger.Instance.Error($"加载千问API配置失败: {ex.Message}");
             }
         }
 
@@ -107,14 +107,14 @@ namespace Jvedio.Core.AI
                     httpRequest.Content = content;
                     httpRequest.Headers.Add("Authorization", $"Bearer {_apiKey}");
 
-                    Logger.Debug($"千问API请求: {url}");
+                    Logger.Instance.Debug($"千问API请求: {url}");
 
                     var response = await httpClient.SendAsync(httpRequest);
                     var responseContent = await response.Content.ReadAsStringAsync();
 
                     if (!response.IsSuccessStatusCode)
                     {
-                        Logger.Error($"千问API请求失败: {response.StatusCode}, {responseContent}");
+                        Logger.Instance.Error($"千问API请求失败: {response.StatusCode}, {responseContent}");
                         throw new Exception($"API请求失败: {response.StatusCode}");
                     }
 
@@ -124,7 +124,7 @@ namespace Jvedio.Core.AI
             }
             catch (Exception ex)
             {
-                Logger.Error($"千问API调用异常: {ex.Message}");
+                Logger.Instance.Error($"千问API调用异常: {ex.Message}");
                 throw;
             }
         }

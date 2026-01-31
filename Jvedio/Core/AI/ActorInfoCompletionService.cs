@@ -80,7 +80,7 @@ namespace Jvedio.Core.AI
 
             if (needCompletion)
             {
-                Logger.Info($"演员 {actorInfo.ActorName} 信息缺失 {missingFields}/{totalFields} ({missingRatio:P0})，需要补全");
+                Logger.Instance.Info($"演员 {actorInfo.ActorName} 信息缺失 {missingFields}/{totalFields} ({missingRatio:P0})，需要补全");
             }
 
             return needCompletion;
@@ -153,14 +153,14 @@ namespace Jvedio.Core.AI
                         result.Success = true;
                         result.Message = $"成功补全 {completedData.Reason}";
 
-                        Logger.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
+                        Logger.Instance.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
                     }
                 }
             }
             catch (Exception ex)
             {
                 result.Message = $"补全异常: {ex.Message}";
-                Logger.Error($"演员信息补全异常: {ex.Message}");
+                Logger.Instance.Error($"演员信息补全异常: {ex.Message}");
             }
 
             return result;
@@ -258,14 +258,14 @@ namespace Jvedio.Core.AI
                         result.Success = true;
                         result.Message = $"成功补全 {completedData.Reason}";
 
-                        Logger.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
+                        Logger.Instance.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
                     }
                 }
             }
             catch (Exception ex)
             {
                 result.Message = $"补全异常: {ex.Message}";
-                Logger.Error($"演员信息补全异常: {ex.Message}");
+                Logger.Instance.Error($"演员信息补全异常: {ex.Message}");
             }
 
             return result;
@@ -459,7 +459,7 @@ namespace Jvedio.Core.AI
             }
             catch (Exception ex)
             {
-                Logger.Error($"图片转换Base64失败: {ex.Message}");
+                Logger.Instance.Error($"图片转换Base64失败: {ex.Message}");
                 return null;
             }
         }
