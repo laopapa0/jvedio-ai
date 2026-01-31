@@ -36,6 +36,7 @@ namespace Jvedio
 
         public ActorInfo CurrentActorInfo { get; set; }
 
+        private string _lastRawResponse = "";
 
         #endregion
 
@@ -335,14 +336,20 @@ namespace Jvedio
                         CurrentActorInfo.Hobby = info.Hobby;
                     }
 
+                    // 保存原始返回内容
+                    _lastRawResponse = result.RawResponse ?? "无原始返回内容";
+
                     var message = $"AI 补全成功！置信度：{result.Confidence:P0}\n\n";
                     message += $"已更新字段：生日={info.Birthday}, 年龄={info.Age}, 身高={info.Height}\n";
-                    message += $"原始返回：{result.RawResponse ?? "无"}";
+                    message += $"可以点击\"查看原始返回\"按钮查看完整的 AI 返回内容";
 
                     MessageNotify.Success(message);
                 }
                 else
                 {
+                    // 保存原始返回内容
+                    _lastRawResponse = result.RawResponse ?? "无原始返回内容";
+
                     var errorMsg = $"AI 补全失败：{result.Message}\n\n";
                     if (!string.IsNullOrEmpty(result.RawResponse))
                     {
@@ -361,6 +368,21 @@ namespace Jvedio
                 btnAICompletion.IsEnabled = true;
                 btnAICompletion.Content = "AI 补全信息";
             }
+        }
+
+        /// <summary>
+        /// 查看原始返回内容
+        /// </summary>
+        private void ShowRawResponse_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_lastRawResponse))
+            {
+                MessageNotify.Warn("还没有原始返回内容，请先点击\"AI 补全信息\"按钮");
+                return;
+            }
+
+            var dialog = new Dialog_ShowRawResponse(_lastRawResponse);
+            dialog.ShowDialog();
         }
     }
 }

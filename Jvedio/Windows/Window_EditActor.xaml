@@ -298,6 +298,15 @@
                 Orientation="Horizontal">
 
                 <Button
+                    x:Name="btnShowRawResponse"
+                    MinWidth="140"
+                    Margin="10"
+                    VerticalAlignment="Bottom"
+                    Click="ShowRawResponse_Click"
+                    Content="查看原始返回"
+                    Style="{StaticResource ButtonInfo}" />
+
+                <Button
                     x:Name="btnAICompletion"
                     MinWidth="120"
                     Margin="10"

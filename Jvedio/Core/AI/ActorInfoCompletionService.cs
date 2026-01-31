@@ -163,7 +163,10 @@ namespace Jvedio.Core.AI
                     var content = response.Choices[0].Message.Content;
                     result.RawResponse = content;
 
-                    Logger.Instance.Debug($"演员信息补全原始返回: {actorInfo.ActorName} -> {content}");
+                    // 强制输出原始返回内容，便于调试
+                    Logger.Instance.Warn($"【重要】演员信息补全原始返回: {actorInfo.ActorName}");
+                    Logger.Instance.Warn($"原始内容长度: {content?.Length ?? 0}");
+                    Logger.Instance.Warn($"原始内容: {content}");
 
                     // 尝试从内容中提取JSON（去除可能的markdown标记）
                     var jsonContent = content;
@@ -186,7 +189,7 @@ namespace Jvedio.Core.AI
                         }
                     }
 
-                    Logger.Instance.Debug($"提取的JSON内容: {jsonContent}");
+                    Logger.Instance.Warn($"提取的JSON内容: {jsonContent}");
 
                     // 解析JSON响应
                     CompletedActorData completedData = null;
@@ -196,14 +199,14 @@ namespace Jvedio.Core.AI
                         var dynamicData = JsonConvert.DeserializeObject<dynamic>(jsonContent);
                         if (dynamicData != null)
                         {
-                            Logger.Instance.Debug($"动态解析结果: {dynamicData.ToString()}");
+                            Logger.Instance.Warn($"动态解析结果: {dynamicData.ToString()}");
                         }
 
                         completedData = JsonConvert.DeserializeObject<CompletedActorData>(jsonContent);
 
                         if (completedData != null)
                         {
-                            Logger.Instance.Info($"字段统计: Birthday={completedData.Birthday != null}, Age={completedData.Age.HasValue}, Height={completedData.Height.HasValue}");
+                            Logger.Instance.Warn($"字段统计: Birthday={completedData.Birthday != null}, Age={completedData.Age.HasValue}, Height={completedData.Height.HasValue}");
                         }
                     }
                     catch (JsonException jsonEx)
@@ -480,14 +483,15 @@ namespace Jvedio.Core.AI
 }}
 
 重要规则：
-1. 只补全确实缺失的字段，已有信息不要修改
-2. 如果无法确定某个字段值，返回null，不要编造
-3. 对于知名女演员，可以根据公开信息补全
-4. 对于不出名的演员，只能根据照片推断（如身高、体型）
+1. 对于知名女演员，请根据公开信息补全尽可能多的字段
+2. 对于不出名的演员，请根据名字特征提供合理的估算值（不要返回过多的null）
+3. 如果只能估算某些字段（如身高范围），请提供估算值而不是null
+4. 不要编造不确定的具体信息，但可以提供范围或常见值
 5. 生日格式必须为YYYY-MM-DD，或仅年份YYYY，不确定则返回null
 6. 三围范围要合理（Chest: 70-120cm, Waist: 50-80cm, Hipline: 70-120cm）
 7. 身高范围：140-180cm，体重：35-80kg
-8. Cup范围：A-Z（日本常见为B-F）";
+8. Cup范围：A-Z（日本常见为B-F）
+9. 至少尝试填充3-5个字段，提供有用的参考信息";
         }
 
         /// <summary>
