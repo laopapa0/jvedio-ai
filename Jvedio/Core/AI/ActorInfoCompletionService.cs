@@ -315,9 +315,9 @@ namespace Jvedio.Core.AI
 已有信息：
 - 性别：女性
 - 生日：{existingInfo.Birthday ?? "未提供"}
-- 年龄：{existingInfo.Age}"
-- 身高：{existingInfo.Height}"
-- 体重：{existingInfo.Weight}"
+- 年龄：{existingInfo.Age}
+- 身高：{existingInfo.Height}
+- 体重：{existingInfo.Weight}
 - 血型：{existingInfo.BloodType ?? "未提供"}
 - 三围：{existingInfo.Chest}/{existingInfo.Waist}/{existingInfo.Hipline}
 - 出生地：{existingInfo.BirthPlace ?? "未提供"}
