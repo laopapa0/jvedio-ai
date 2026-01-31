@@ -131,6 +131,14 @@
 
 [<img src="https://s1.ax1x.com/2022/10/07/x8QAS0.png" alt="x8QAS0.png" style="zoom:80%;" />](https://imgse.com/i/x8QAS0)
 
+## 🤖 AI 智能补全演员信息
+
+- 使用千问 AI 自动补全演员详细信息
+- 支持生日、身高、体重、罩杯等多种信息自动获取
+- 一键补全，省时省力
+
+> 详细使用说明请查看：[AI 补全功能使用指南](AI_COMPLETION_GUIDE.md)
+
 ## 视频处理功能
 
 - 截图
