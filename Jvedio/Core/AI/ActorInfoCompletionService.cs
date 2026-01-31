@@ -192,7 +192,19 @@ namespace Jvedio.Core.AI
                     CompletedActorData completedData = null;
                     try
                     {
+                        // 先尝试解析为动态对象，查看实际返回的内容
+                        var dynamicData = JsonConvert.DeserializeObject<dynamic>(jsonContent);
+                        if (dynamicData != null)
+                        {
+                            Logger.Instance.Debug($"动态解析结果: {dynamicData.ToString()}");
+                        }
+
                         completedData = JsonConvert.DeserializeObject<CompletedActorData>(jsonContent);
+
+                        if (completedData != null)
+                        {
+                            Logger.Instance.Info($"字段统计: Birthday={completedData.Birthday != null}, Age={completedData.Age.HasValue}, Height={completedData.Height.HasValue}");
+                        }
                     }
                     catch (JsonException jsonEx)
                     {
@@ -344,7 +356,19 @@ namespace Jvedio.Core.AI
                     CompletedActorData completedData = null;
                     try
                     {
+                        // 先尝试解析为动态对象，查看实际返回的内容
+                        var dynamicData = JsonConvert.DeserializeObject<dynamic>(jsonContent);
+                        if (dynamicData != null)
+                        {
+                            Logger.Instance.Debug($"动态解析结果: {dynamicData.ToString()}");
+                        }
+
                         completedData = JsonConvert.DeserializeObject<CompletedActorData>(jsonContent);
+
+                        if (completedData != null)
+                        {
+                            Logger.Instance.Info($"字段统计: Birthday={completedData.Birthday != null}, Age={completedData.Age.HasValue}, Height={completedData.Height.HasValue}");
+                        }
                     }
                     catch (JsonException jsonEx)
                     {

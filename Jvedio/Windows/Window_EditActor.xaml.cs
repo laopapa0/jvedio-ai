@@ -335,11 +335,20 @@ namespace Jvedio
                         CurrentActorInfo.Hobby = info.Hobby;
                     }
 
-                    MessageNotify.Success($"AI 补全成功！置信度：{result.Confidence:P0}");
+                    var message = $"AI 补全成功！置信度：{result.Confidence:P0}\n\n";
+                    message += $"已更新字段：生日={info.Birthday}, 年龄={info.Age}, 身高={info.Height}\n";
+                    message += $"原始返回：{result.RawResponse ?? "无"}";
+
+                    MessageNotify.Success(message);
                 }
                 else
                 {
-                    MessageNotify.Error($"AI 补全失败：{result.Message}");
+                    var errorMsg = $"AI 补全失败：{result.Message}\n\n";
+                    if (!string.IsNullOrEmpty(result.RawResponse))
+                    {
+                        errorMsg += $"原始返回：{result.RawResponse}";
+                    }
+                    MessageNotify.Error(errorMsg);
                 }
             }
             catch (Exception ex)
