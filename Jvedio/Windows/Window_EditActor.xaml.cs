@@ -381,7 +381,7 @@ namespace Jvedio
                 return;
             }
 
-            var dialog = new Jvedio.Windows.Dialog_ShowRawResponse(_lastRawResponse);
+            var dialog = new Dialog_ShowRawResponse(_lastRawResponse);
             dialog.ShowDialog();
         }
     }

@@ -48,7 +48,7 @@ namespace Jvedio
             }
             else
             {
-                MessageNotify.Warn("没有可复制的结果");
+                MessageNotify.Warning("没有可复制的结果");
             }
         }
 
