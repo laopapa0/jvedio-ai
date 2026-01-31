@@ -876,12 +876,6 @@ mkdir "$(ProjectDir)bin\Release"
 XCOPY  "$(ProjectDir)Reference\JvedioLib.dll"  "$(ProjectDir)bin\Release"    /Y /i
 XCOPY  "$(ProjectDir)Resources\Jvedio.ico"  "$(ProjectDir)bin\Release"    /Y /i
 
-XCOPY  "D:\SuperStudio\Newtonsoft.Json\Src\Newtonsoft.Json\bin\Release\net472\Newtonsoft.Json.dll" "$(ProjectDir)Reference"    /Y /i
-
-XCOPY "D:\SuperStudio\SuperUtils\SuperUtils\bin\Debug\SuperUtils.dll" "$(ProjectDir)Reference"    /Y /i
-
-XCOPY "D:\SuperStudio\SuperControls\SuperControls.Style\bin\Debug\SuperControls.Style.dll" "$(ProjectDir)Reference"    /Y /i
-
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
