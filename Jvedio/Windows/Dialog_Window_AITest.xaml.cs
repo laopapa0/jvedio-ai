@@ -2,12 +2,12 @@ using Jvedio.Core.AI;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Jvedio.Windows
+namespace Jvedio
 {
     /// <summary>
     /// Dialog_Window_AITest.xaml 的交互逻辑
     /// </summary>
-    public partial class Dialog_Window_AITest : BaseWindow
+    public partial class Dialog_Window_AITest : BaseDialog
     {
         private string _diagnosticResult = "";
 

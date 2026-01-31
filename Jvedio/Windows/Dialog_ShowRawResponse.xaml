@@ -1,14 +1,15 @@
-<super:BaseWindow x:Class="Jvedio.Windows.Dialog_ShowRawResponse"
+<super:BaseDialog x:Class="Jvedio.Dialog_ShowRawResponse"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:super="clr-namespace:SuperControls.Style.Windows;assembly=SuperControls.Style"
+        xmlns:super="https://github.com/SuperStudio/SuperControls"
         mc:Ignorable="d"
         Title="查看原始返回内容"
         Height="400"
         Width="800"
-        WindowStartupLocation="CenterOwner">
+        Icon="pack://application:,,,/Resources/Jvedio.ico"
+        WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -43,4 +44,4 @@
                     Style="{StaticResource ButtonInfo}"/>
         </StackPanel>
     </Grid>
-</super:BaseWindow>
+</super:BaseDialog>

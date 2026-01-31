@@ -1,9 +1,9 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Jvedio.Windows
+namespace Jvedio
 {
-    public partial class Dialog_ShowRawResponse : BaseWindow
+    public partial class Dialog_ShowRawResponse : BaseDialog
     {
         public Dialog_ShowRawResponse(string rawResponse)
         {

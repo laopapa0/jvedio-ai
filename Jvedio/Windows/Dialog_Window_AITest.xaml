@@ -1,15 +1,15 @@
-<super:BaseWindow x:Class="Jvedio.Windows.Dialog_Window_AITest"
+<super:BaseDialog x:Class="Jvedio.Dialog_Window_AITest"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:super="clr-namespace:SuperControls.Style.Windows;assembly=SuperControls.Style"
-        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:super="https://github.com/SuperStudio/SuperControls"
         mc:Ignorable="d"
         Title="AI 功能诊断"
         Height="500"
         Width="600"
-        WindowStartupLocation="CenterOwner">
+        Icon="pack://application:,,,/Resources/Jvedio.ico"
+        WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -55,4 +55,4 @@
                     Style="{StaticResource ButtonInfo}"/>
         </StackPanel>
     </Grid>
-</super:BaseWindow>
+</super:BaseDialog>
