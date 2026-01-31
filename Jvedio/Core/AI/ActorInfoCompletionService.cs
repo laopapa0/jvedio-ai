@@ -26,17 +26,40 @@ namespace Jvedio.Core.AI
     /// </summary>
     public class CompletedActorData
     {
+        [JsonProperty("birthday")]
         public string Birthday { get; set; } = null;
+
+        [JsonProperty("age")]
         public int? Age { get; set; } = null;
+
+        [JsonProperty("bloodType")]
         public string BloodType { get; set; } = null;
+
+        [JsonProperty("height")]
         public int? Height { get; set; } = null;
+
+        [JsonProperty("weight")]
         public int? Weight { get; set; } = null;
+
+        [JsonProperty("cup")]
         public char? Cup { get; set; } = null;
+
+        [JsonProperty("chest")]
         public int? Chest { get; set; } = null;
+
+        [JsonProperty("waist")]
         public int? Waist { get; set; } = null;
+
+        [JsonProperty("hipline")]
         public int? Hipline { get; set; } = null;
+
+        [JsonProperty("birthPlace")]
         public string BirthPlace { get; set; } = null;
+
+        [JsonProperty("hobby")]
         public string Hobby { get; set; } = null;
+
+        [JsonProperty("reason")]
         public string Reason { get; set; } = "";
     }
 
@@ -140,10 +163,14 @@ namespace Jvedio.Core.AI
                     var content = response.Choices[0].Message.Content;
                     result.RawResponse = content;
 
+                    Logger.Instance.Debug($"演员信息补全原始返回: {actorInfo.ActorName} -> {content}");
+
                     // 解析JSON响应
                     var completedData = JsonConvert.DeserializeObject<CompletedActorData>(content);
                     if (completedData != null)
                     {
+                        Logger.Instance.Debug($"反序列化结果: Birthday={completedData.Birthday}, Age={completedData.Age}, Height={completedData.Height}");
+
                         // 应用补全的信息
                         ApplyCompletion(actorInfo, completedData);
 
@@ -152,7 +179,11 @@ namespace Jvedio.Core.AI
                         result.Success = true;
                         result.Message = $"成功补全 {completedData.Reason}";
 
-                        Logger.Instance.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
+                        Logger.Instance.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}, 置信度: {result.Confidence:P0}");
+                    }
+                    else
+                    {
+                        Logger.Instance.Warn($"演员信息反序列化失败: {actorInfo.ActorName}");
                     }
                 }
             }
@@ -245,10 +276,14 @@ namespace Jvedio.Core.AI
                     var content = response.Choices[0].Message.Content;
                     result.RawResponse = content;
 
+                    Logger.Instance.Debug($"图片补全原始返回: {actorInfo.ActorName} -> {content}");
+
                     // 解析JSON响应
                     var completedData = JsonConvert.DeserializeObject<CompletedActorData>(content);
                     if (completedData != null)
                     {
+                        Logger.Instance.Debug($"反序列化结果: Birthday={completedData.Birthday}, Age={completedData.Age}, Height={completedData.Height}");
+
                         // 应用补全的信息
                         ApplyCompletion(actorInfo, completedData);
 
@@ -257,7 +292,11 @@ namespace Jvedio.Core.AI
                         result.Success = true;
                         result.Message = $"成功补全 {completedData.Reason}";
 
-                        Logger.Instance.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}");
+                        Logger.Instance.Info($"演员信息补全成功: {actorInfo.ActorName}, 理由: {completedData.Reason}, 置信度: {result.Confidence:P0}");
+                    }
+                    else
+                    {
+                        Logger.Instance.Warn($"演员信息反序列化失败: {actorInfo.ActorName}");
                     }
                 }
             }
