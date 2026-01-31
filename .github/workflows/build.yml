@@ -11,7 +11,7 @@ on:
 
 env:
   SOLUTION_PATH: Jvedio.sln
-  PROJECT_PATH: Jvedio\Jvedio\Jvedio.csproj
+  PROJECT_PATH: Jvedio\Jvedio.csproj
   BUILD_CONFIGURATION: Release
 
 jobs:
