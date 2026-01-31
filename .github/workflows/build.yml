@@ -37,10 +37,10 @@ jobs:
       run: nuget restore ${{ env.SOLUTION_PATH }}
 
     - name: Clean build
-      run: msbuild ${{ env.PROJECT_PATH }} /t:Clean /p:Configuration=${{ env.BUILD_CONFIGURATION }}
+      run: msbuild ${{ env.SOLUTION_PATH }} /t:Clean /p:Configuration=${{ env.BUILD_CONFIGURATION }}
 
     - name: Build solution
-      run: msbuild ${{ env.PROJECT_PATH }} /t:Build /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform="Any CPU"
+      run: msbuild ${{ env.SOLUTION_PATH }} /t:Build /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform="Any CPU"
 
     - name: Prepare release package
       shell: pwsh
