@@ -31,7 +31,7 @@
                        FontFamily="Consolas"
                        FontSize="12"
                        TextWrapping="Wrap"
-                       WhiteSpace="Pre"/>
+                       xml:space="preserve"/>
         </ScrollViewer>
 
         <!-- 按钮 -->
