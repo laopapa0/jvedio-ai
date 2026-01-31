@@ -165,8 +165,41 @@ namespace Jvedio.Core.AI
 
                     Logger.Instance.Debug($"演员信息补全原始返回: {actorInfo.ActorName} -> {content}");
 
+                    // 尝试从内容中提取JSON（去除可能的markdown标记）
+                    var jsonContent = content;
+                    if (content.Contains("```json"))
+                    {
+                        var startIndex = content.IndexOf("```json") + 7;
+                        var endIndex = content.IndexOf("```", startIndex);
+                        if (endIndex > startIndex)
+                        {
+                            jsonContent = content.Substring(startIndex, endIndex - startIndex).Trim();
+                        }
+                    }
+                    else if (content.Contains("```"))
+                    {
+                        var startIndex = content.IndexOf("```") + 3;
+                        var endIndex = content.IndexOf("```", startIndex);
+                        if (endIndex > startIndex)
+                        {
+                            jsonContent = content.Substring(startIndex, endIndex - startIndex).Trim();
+                        }
+                    }
+
+                    Logger.Instance.Debug($"提取的JSON内容: {jsonContent}");
+
                     // 解析JSON响应
-                    var completedData = JsonConvert.DeserializeObject<CompletedActorData>(content);
+                    CompletedActorData completedData = null;
+                    try
+                    {
+                        completedData = JsonConvert.DeserializeObject<CompletedActorData>(jsonContent);
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        Logger.Instance.Error($"JSON反序列化异常: {actorInfo.ActorName} -> {jsonEx.Message}");
+                        Logger.Instance.Debug($"JSON内容: {jsonContent}");
+                    }
+
                     if (completedData != null)
                     {
                         Logger.Instance.Debug($"反序列化结果: Birthday={completedData.Birthday}, Age={completedData.Age}, Height={completedData.Height}");
@@ -184,7 +217,13 @@ namespace Jvedio.Core.AI
                     else
                     {
                         Logger.Instance.Warn($"演员信息反序列化失败: {actorInfo.ActorName}");
+                        result.Message = "反序列化失败：无法解析返回数据";
                     }
+                }
+                else
+                {
+                    Logger.Instance.Warn($"API返回为空: {actorInfo.ActorName}");
+                    result.Message = "API返回数据为空";
                 }
             }
             catch (Exception ex)
@@ -278,8 +317,41 @@ namespace Jvedio.Core.AI
 
                     Logger.Instance.Debug($"图片补全原始返回: {actorInfo.ActorName} -> {content}");
 
+                    // 尝试从内容中提取JSON（去除可能的markdown标记）
+                    var jsonContent = content;
+                    if (content.Contains("```json"))
+                    {
+                        var startIndex = content.IndexOf("```json") + 7;
+                        var endIndex = content.IndexOf("```", startIndex);
+                        if (endIndex > startIndex)
+                        {
+                            jsonContent = content.Substring(startIndex, endIndex - startIndex).Trim();
+                        }
+                    }
+                    else if (content.Contains("```"))
+                    {
+                        var startIndex = content.IndexOf("```") + 3;
+                        var endIndex = content.IndexOf("```", startIndex);
+                        if (endIndex > startIndex)
+                        {
+                            jsonContent = content.Substring(startIndex, endIndex - startIndex).Trim();
+                        }
+                    }
+
+                    Logger.Instance.Debug($"提取的JSON内容: {jsonContent}");
+
                     // 解析JSON响应
-                    var completedData = JsonConvert.DeserializeObject<CompletedActorData>(content);
+                    CompletedActorData completedData = null;
+                    try
+                    {
+                        completedData = JsonConvert.DeserializeObject<CompletedActorData>(jsonContent);
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        Logger.Instance.Error($"JSON反序列化异常: {actorInfo.ActorName} -> {jsonEx.Message}");
+                        Logger.Instance.Debug($"JSON内容: {jsonContent}");
+                    }
+
                     if (completedData != null)
                     {
                         Logger.Instance.Debug($"反序列化结果: Birthday={completedData.Birthday}, Age={completedData.Age}, Height={completedData.Height}");
@@ -297,7 +369,13 @@ namespace Jvedio.Core.AI
                     else
                     {
                         Logger.Instance.Warn($"演员信息反序列化失败: {actorInfo.ActorName}");
+                        result.Message = "反序列化失败：无法解析返回数据";
                     }
+                }
+                else
+                {
+                    Logger.Instance.Warn($"API返回为空: {actorInfo.ActorName}");
+                    result.Message = "API返回数据为空";
                 }
             }
             catch (Exception ex)
